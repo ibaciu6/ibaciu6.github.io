@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ionut Baciu — Dashboard</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --panel: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-green: #3fb950;
+      --accent-orange: #d29922;
+      --accent-red: #f85149;
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    main { max-width: 1100px; margin: 0 auto; padding: 48px 20px 64px; }
+
+    /* Header */
+    header { margin-bottom: 40px; }
+    h1 { margin: 0; font-size: 2.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .subtitle { color: var(--muted); font-size: 1.1rem; margin: 6px 0 0; }
+    .header-links { margin-top: 14px; display: flex; gap: 20px; flex-wrap: wrap; }
+    .header-links a { color: var(--accent); text-decoration: none; font-size: 0.95rem; }
+    .header-links a:hover { text-decoration: underline; }
+
+    /* Stats bar */
+    .stats {
+      display: flex; gap: 24px; flex-wrap: wrap;
+      background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 28px; margin-bottom: 32px;
+    }
+    .stat { text-align: center; min-width: 80px; }
+    .stat-value { font-size: 1.8rem; font-weight: 700; line-height: 1; }
+    .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+    .stat-green .stat-value { color: var(--accent-green); }
+    .stat-blue .stat-value { color: var(--accent); }
+    .stat-orange .stat-value { color: var(--accent-orange); }
+    .stat-red .stat-value { color: var(--accent-red); }
+
+    /* Feed health banner */
+    .feed-banner {
+      background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 18px 24px; margin-bottom: 32px; display: flex;
+      align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    .feed-banner h2 { margin: 0; font-size: 1rem; font-weight: 600; }
+    .feed-banner .feed-stats { display: flex; gap: 16px; font-size: 0.9rem; }
+    .feed-banner .feed-stats span { color: var(--muted); }
+    .feed-banner .feed-stats strong { color: var(--text); }
+    .feed-banner a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .feed-banner a:hover { text-decoration: underline; }
+
+    /* Section titles */
+    .section-title {
+      font-size: 1.1rem; font-weight: 600; margin: 0 0 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-title a { color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 400; }
+    .section-title a:hover { text-decoration: underline; }
+
+    /* Repo grid */
+    .repo-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
+    }
+    .repo-card {
+      background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px; display: flex; flex-direction: column;
+      transition: border-color 0.15s;
+    }
+    .repo-card:hover { border-color: var(--muted); }
+    .repo-name { font-size: 1.05rem; font-weight: 600; }
+    .repo-name a { color: var(--accent); text-decoration: none; }
+    .repo-name a:hover { text-decoration: underline; }
+    .repo-desc { font-size: 0.88rem; color: var(--muted); margin: 8px 0; line-height: 1.5; flex: 1; }
+    .repo-meta { display: flex; align-items: center; gap: 16px; margin-top: 12px; font-size: 0.82rem; }
+    .repo-lang { display: flex; align-items: center; gap: 4px; }
+    .lang-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+    .lang-dot.python { background: #3572A5; }
+    .lang-dot.javascript { background: #f1e05a; }
+    .lang-dot.java { background: #b07219; }
+    .lang-dot.html { background: #e34c26; }
+    .lang-dot.typescript { background: #3178c6; }
+    .lang-dot.css { background: #563d7c; }
+    .repo-updated { color: var(--muted); }
+    .repo-link-icon { margin-left: auto; color: var(--muted); }
+
+    /* Divider */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    /* Footer */
+    footer { margin-top: 48px; text-align: center; color: var(--muted); font-size: 0.85rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      main { padding: 24px 14px 40px; }
+      h1 { font-size: 1.8rem; }
+      .repo-grid { grid-template-columns: 1fr; }
+      .stats { gap: 16px; padding: 16px; }
+      .feed-banner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Ionut Baciu</h1>
+      <p class="subtitle">GitHub Projects Dashboard</p>
+      <div class="header-links">
+        <a href="https://github.com/ibaciu6" target="_blank" rel="noopener">github.com/ibaciu6</a>
+        <a href="https://ibaciu6.github.io/rss-generator/" target="_blank" rel="noopener">RSS Feeds</a>
+        <a href="https://github.com/ibaciu6?tab=repositories" target="_blank" rel="noopener">All Repositories</a>
+      </div>
+    </header>
+
+    <div class="stats">
+      <div class="stat stat-blue">
+        <div class="stat-value" id="totalRepos">—</div>
+        <div class="stat-label">Repositories</div>
+      </div>
+      <div class="stat stat-green">
+        <div class="stat-value" id="totalLangs">—</div>
+        <div class="stat-label">Languages</div>
+      </div>
+      <div class="stat stat-orange">
+        <div class="stat-value" id="totalStars">—</div>
+        <div class="stat-label">Stars</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="lastUpdated">—</div>
+        <div class="stat-label">Last Updated</div>
+      </div>
+    </div>
+
+    <div class="feed-banner">
+      <div>
+        <h2>RSS Feed Generator</h2>
+        <div class="feed-stats">
+          <span>Feeds: <strong id="totalFeeds">—</strong></span>
+          <span>Available: <strong id="availableFeeds" style="color:var(--accent-green);">—</strong></span>
+          <span>Unavailable: <strong id="unavailableFeeds" style="color:var(--accent-orange);">—</strong></span>
+        </div>
+      </div>
+      <a href="https://ibaciu6.github.io/rss-generator/" target="_blank" rel="noopener">View full dashboard →</a>
+    </div>
+
+    <h2 class="section-title">Repositories</h2>
+    <div class="repo-grid" id="repoGrid"></div>
+
+    <footer>
+      <p>Generated from <a href="https://github.com/ibaciu6" target="_blank" rel="noopener">github.com/ibaciu6</a> &middot; <span id="generatedAt"></span></p>
+    </footer>
+  </main>
+
+<script>
+// Language color mapping
+const LANG_COLORS = {
+  Python: '#3572A5', JavaScript: '#f1e05a', TypeScript: '#3178c6',
+  Java: '#b07219', HTML: '#e34c26', CSS: '#563d7c', Shell: '#89e051',
+  Ruby: '#701516', Go: '#00ADD8', Rust: '#dea584', 'C#': '#178600',
+  PHP: '#4F5D95', Swift: '#F05138', Kotlin: '#A97BFF', Dart: '#00B4AB',
+  Lua: '#000080', Scala: '#c22d40', Elixir: '#6e4a7e', Haskell: '#5e5086',
+};
+
+// Repos data
+const REPOS = [
+  {
+    name: 'rss-generator',
+    url: 'https://github.com/ibaciu6/rss-generator',
+    desc: 'Config-driven RSS feed generator for streaming sites. Scrapes 49+ Romanian/English sources, enriches with TMDb posters, deploys to GitHub Pages.',
+    lang: 'Python',
+    updated: '2026-07-02'
+  },
+  {
+    name: 'whatsapp-media-scraper',
+    url: 'https://github.com/ibaciu6/whatsapp-media-scraper',
+    desc: 'WhatsApp group media scraper with interactive menu.',
+    lang: 'JavaScript',
+    updated: '2026-06-20'
+  },
+  {
+    name: 'spotify-youtube-downloader',
+    url: 'https://github.com/ibaciu6/spotify-youtube-downloader',
+    desc: 'Spotify and YouTube downloader with WebUI.',
+    lang: 'Python',
+    updated: '2026-06-20'
+  },
+  {
+    name: 'process-video',
+    url: 'https://github.com/ibaciu6/process-video',
+    desc: 'Video processing tool.',
+    lang: 'Python',
+    updated: '2026-06-20'
+  },
+  {
+    name: 'facebook-downloader',
+    url: 'https://github.com/ibaciu6/facebook-downloader',
+    desc: 'Facebook video downloader tool.',
+    lang: 'Python',
+    updated: '2026-06-20'
+  },
+  {
+    name: 'dynamics-365-text-resizer',
+    url: 'https://github.com/ibaciu6/dynamics-365-text-resizer',
+    desc: 'Chrome and Firefox extension that makes text fields in Dynamics 365 vertically resizable and auto-fits them to their content.',
+    lang: 'JavaScript',
+    updated: '2026-06-11'
+  },
+  {
+    name: 'aem-wknd-cif-venia',
+    url: 'https://github.com/ibaciu6/aem-wknd-cif-venia',
+    desc: 'Merged Adobe AEM project combining WKND Sites reference implementation with Venia Commerce (CIF) storefront. Demonstrates content + commerce integration in a single AEM installation.',
+    lang: 'JavaScript',
+    updated: '2026-01-30'
+  },
+  {
+    name: 'aem-boilerplate-xwalk',
+    url: 'https://github.com/ibaciu6/aem-boilerplate-xwalk',
+    desc: 'AEM Edge Delivery Services boilerplate with XWalk integration.',
+    lang: 'JavaScript',
+    updated: '2025-12-24'
+  },
+  {
+    name: 'aem-boilerplate-commerce',
+    url: 'https://github.com/ibaciu6/aem-boilerplate-commerce',
+    desc: 'AEM Commerce boilerplate with CIF components.',
+    lang: 'JavaScript',
+    updated: '2026-01-05'
+  }
+];
+
+function render() {
+  // Stats
+  const langs = new Set(REPOS.map(r => r.lang));
+  const stars = REPOS.reduce((s, r) => s + (r.stars || 0), 0);
+  const dates = REPOS.map(r => new Date(r.updated)).filter(d => !isNaN(d));
+  const latest = dates.length ? dates.sort((a,b) => b-a)[0].toISOString().slice(0,10) : '—';
+
+  document.getElementById('totalRepos').textContent = REPOS.length;
+  document.getElementById('totalLangs').textContent = langs.size;
+  document.getElementById('totalStars').textContent = stars || '—';
+  document.getElementById('lastUpdated').textContent = latest;
+  document.getElementById('generatedAt').textContent = 'Updated ' + new Date().toISOString().slice(0,10);
+
+  // Feed health — fetch from rss-generator index
+  fetch('https://ibaciu6.github.io/rss-generator/')
+    .then(r => r.text())
+    .then(html => {
+      const avail = (html.match(/status-available/g) || []).length;
+      const total = (html.match(/<tr>/g) || []).length;
+      document.getElementById('availableFeeds').textContent = avail;
+      document.getElementById('totalFeeds').textContent = total;
+      document.getElementById('unavailableFeeds').textContent = total - avail;
+    })
+    .catch(() => {
+      document.getElementById('availableFeeds').textContent = '?';
+      document.getElementById('totalFeeds').textContent = '?';
+    });
+
+  // Repo cards
+  const grid = document.getElementById('repoGrid');
+  REPOS.sort((a,b) => new Date(b.updated) - new Date(a.updated));
+  grid.innerHTML = REPOS.map(r => {
+    const color = LANG_COLORS[r.lang] || '#8b949e';
+    const langClass = (r.lang || '').toLowerCase().replace(/[^a-z]/g, '');
+    const updatedRel = timeAgo(r.updated);
+    return `<div class="repo-card">
+      <div class="repo-name"><a href="${r.url}" target="_blank" rel="noopener">${r.name}</a></div>
+      <div class="repo-desc">${r.desc || 'No description'}</div>
+      <div class="repo-meta">
+        <span class="repo-lang"><span class="lang-dot ${langClass}" style="background:${color}"></span>${r.lang || 'Unknown'}</span>
+        <span class="repo-updated">Updated ${updatedRel}</span>
+        <a href="${r.url}" target="_blank" rel="noopener" class="repo-link-icon">↗</a>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function timeAgo(dateStr) {
+  const d = new Date(dateStr);
+  const now = new Date();
+  const diff = (now - d) / (1000 * 86400);
+  if (diff < 1) return 'today';
+  if (diff < 30) return Math.round(diff) + 'd ago';
+  if (diff < 365) return Math.round(diff / 30) + 'mo ago';
+  return Math.round(diff / 365) + 'y ago';
+}
+
+document.addEventListener('DOMContentLoaded', render);
+</script>
+</body>
+</html>
