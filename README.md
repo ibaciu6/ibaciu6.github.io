@@ -2,6 +2,8 @@
 
 Personal GitHub Pages dashboard — repo overview, RSS feed health, and links.
 
+👉 **[ibaciu6.github.io](https://ibaciu6.github.io)**
+
 Lightweight single-page dashboard built with vanilla HTML/CSS/JS. Fetches live stats from the [rss-generator](https://github.com/ibaciu6/rss-generator) project to display feed health.
 
 **Features**
