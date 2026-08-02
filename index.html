@@ -80,10 +80,6 @@
       letter-spacing: 0.05em; margin-top: 6px; font-weight: 500;
     }
 
-    /* ── Grid ── */
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
-
     /* ── Card ── */
     .card {
       background: var(--surface); border: 1px solid var(--border);
@@ -100,45 +96,12 @@
     .card-title.green::before { background: var(--green); }
     .card-title.blue::before { background: var(--accent); }
 
-    /* ── Heatmap ── */
-    .heatmap { display: flex; gap: 3px; flex-wrap: wrap; }
-    .hm-cell {
-      width: 13px; height: 13px; border-radius: 3px;
-      background: var(--surface2); position: relative; cursor: default;
-    }
-    .hm-cell[data-count="1"] { background: #0e4429; }
-    .hm-cell[data-count="2"] { background: #006d32; }
-    .hm-cell[data-count="3"] { background: #26a641; }
-    .hm-cell[data-count="4"] { background: #39d353; }
-    .hm-cell[data-label]::after {
-      content: attr(data-label);
-      position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
-      background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
-      padding: 4px 10px; font-size: 0.7rem; white-space: nowrap;
-      color: var(--text); display: none; z-index: 10;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-    .hm-cell:hover[data-label]::after { display: block; }
-
     /* ── Language Bar ── */
     .lang-bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 14px; }
     .lang-bar span { height: 100%; transition: width 0.3s; }
     .lang-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.8rem; color: var(--muted); }
     .lang-legend span { display: flex; align-items: center; gap: 6px; }
     .lang-legend .ldot { width: 10px; height: 10px; border-radius: 3px; }
-
-    /* ── Feed Ticker ── */
-    .ticker { max-height: 240px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-    .ticker-item {
-      display: flex; align-items: center; gap: 10px; padding: 10px 0;
-      border-bottom: 1px solid var(--border); font-size: 0.85rem;
-    }
-    .ticker-item:last-child { border-bottom: none; }
-    .ticker-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .ticker-dot.ok { background: var(--green); }
-    .ticker-dot.err { background: var(--red); }
-    .ticker-name { flex: 1; }
-    .ticker-count { color: var(--muted); font-size: 0.78rem; }
 
     /* ── Quick Links ── */
     .links { display: flex; flex-direction: column; gap: 8px; }
@@ -214,44 +177,30 @@
 
     <div class="stats">
       <div class="stat"><div class="stat-val blue" id="totalRepos">—</div><div class="stat-lbl">Repositories</div></div>
-      <div class="stat"><div class="stat-val green" id="totalFeeds">—</div><div class="stat-lbl">Active Feeds</div></div>
-      <div class="stat"><div class="stat-val yellow" id="totalItems">—</div><div class="stat-lbl">Feed Items</div></div>
       <div class="stat"><div class="stat-val" id="langCount">—</div><div class="stat-lbl">Languages</div></div>
     </div>
 
-    <div class="grid">
-      <div class="card">
-        <div class="card-title green">Activity (6 months)</div>
-        <div class="heatmap" id="heatmap"></div>
-      </div>
-      <div class="card">
-        <div class="card-title blue">Language Breakdown</div>
-        <div class="lang-bar" id="langBar"></div>
-        <div class="lang-legend" id="langLegend"></div>
-      </div>
+    <div class="card" style="margin-bottom: 16px;">
+      <div class="card-title blue">Language Breakdown</div>
+      <div class="lang-bar" id="langBar"></div>
+      <div class="lang-legend" id="langLegend"></div>
     </div>
 
-    <div class="grid">
-      <div class="card">
-        <div class="card-title green">Feed Health</div>
-        <div class="ticker" id="ticker"><div style="color:var(--muted);font-size:0.85rem;">Loading...</div></div>
-      </div>
-      <div class="card">
-        <div class="card-title blue">Quick Links</div>
-        <div class="links">
-          <a class="link-item" href="https://github.com/ibaciu6" target="_blank" rel="noopener">
-            <span class="link-icon">&#128269;</span> GitHub Profile
-          </a>
-          <a class="link-item" href="https://github.com/ibaciu6?tab=repositories" target="_blank" rel="noopener">
-            <span class="link-icon">&#128230;</span> All Repositories
-          </a>
-          <a class="link-item" href="https://ibaciu6.github.io/rss-generator/" target="_blank" rel="noopener">
-            <span class="link-icon">&#128225;</span> RSS Generator
-          </a>
-          <a class="link-item" href="https://ibaciu6.github.io/rss-generator/feeds.opml" target="_blank" rel="noopener">
-            <span class="link-icon">&#128228;</span> Download OPML
-          </a>
-        </div>
+    <div class="card" style="margin-bottom: 16px;">
+      <div class="card-title blue">Quick Links</div>
+      <div class="links">
+        <a class="link-item" href="https://github.com/ibaciu6" target="_blank" rel="noopener">
+          <span class="link-icon">&#128269;</span> GitHub Profile
+        </a>
+        <a class="link-item" href="https://github.com/ibaciu6?tab=repositories" target="_blank" rel="noopener">
+          <span class="link-icon">&#128230;</span> All Repositories
+        </a>
+        <a class="link-item" href="https://ibaciu6.github.io/rss-generator/" target="_blank" rel="noopener">
+          <span class="link-icon">&#128225;</span> RSS Generator
+        </a>
+        <a class="link-item" href="https://ibaciu6.github.io/rss-generator/feeds.opml" target="_blank" rel="noopener">
+          <span class="link-icon">&#128228;</span> Download OPML
+        </a>
       </div>
     </div>
 
@@ -307,19 +256,6 @@ function render() {
     `<span><span class="ldot" style="background:${LANG_COLORS[lang] || '#8b949e'}"></span>${lang} (${count})</span>`
   ).join('');
 
-  const heatmap = document.getElementById('heatmap');
-  const dates = REPOS.map(r => r.updated);
-  const now = new Date();
-  let cells = '';
-  for (let i = 179; i >= 0; i--) {
-    const d = new Date(now); d.setDate(d.getDate() - i);
-    const ds = d.toISOString().slice(0, 10);
-    const count = dates.filter(dd => dd === ds).length;
-    const label = count ? `${count} update${count > 1 ? 's' : ''} on ${ds}` : `${ds}`;
-    cells += `<div class="hm-cell" data-count="${Math.min(count, 4)}" data-label="${label}"></div>`;
-  }
-  heatmap.innerHTML = cells;
-
   const grid = document.getElementById('repoGrid');
   grid.innerHTML = REPOS.sort((a, b) => new Date(b.updated) - new Date(a.updated)).map(r => {
     const color = LANG_COLORS[r.lang] || '#8b949e';
@@ -337,33 +273,6 @@ function render() {
       </div>
     </a>`;
   }).join('');
-
-  fetch('https://ibaciu6.github.io/rss-generator/')
-    .then(r => r.text())
-    .then(html => {
-      const avail = (html.match(/status-available/g) || []).length;
-      const items = [...html.matchAll(/<td>(\d+)<\/td>/g)].reduce((s, m) => s + (parseInt(m[1]) || 0), 0);
-      document.getElementById('totalFeeds').textContent = avail;
-      document.getElementById('totalItems').textContent = items;
-      const ticker = document.getElementById('ticker');
-      const rows = [];
-      const trRegex = /<tr>[\s\S]*?<td>([^<]+)<span[^>]*>[^<]*<\/span><\/td>[\s\S]*?status-(\w+)['"]>[^<]*<\/td>[\s\S]*?>(\d+)<\/td>/g;
-      let match;
-      while ((match = trRegex.exec(html)) !== null) {
-        const [, name, status, count] = match;
-        const ok = status === 'available';
-        rows.push(`<div class="ticker-item"><span class="ticker-dot ${ok ? 'ok' : 'err'}"></span><span class="ticker-name">${name.trim()}</span><span class="ticker-count">${count} items</span></div>`);
-      }
-      ticker.innerHTML = rows.sort((a, b) => {
-        const ca = a.match(/>([^<]+)<\/span><span class="ticker-count"/);
-        const cb = b.match(/>([^<]+)<\/span><span class="ticker-count"/);
-        return (ca?.[1] || '').localeCompare(cb?.[1] || '');
-      }).join('') || '<div style="color:var(--muted);font-size:0.85rem;">No feed data</div>';
-    })
-    .catch(() => {
-      document.getElementById('totalFeeds').textContent = '?';
-      document.getElementById('totalItems').textContent = '?';
-    });
 }
 
 function timeAgo(dateStr) {
