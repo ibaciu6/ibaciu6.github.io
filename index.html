@@ -347,7 +347,7 @@ function render() {
       document.getElementById('totalItems').textContent = items;
       const ticker = document.getElementById('ticker');
       const rows = [];
-      const trRegex = /<tr>[\s\S]*?<td>([^<]+)<span[^>]*>[^<]*<\/span><\/td>[\s\S]*?status-(\w+)">[^<]*<\/td>[\s\S]*?>(\d+)<\/td>/g;
+      const trRegex = /<tr>[\s\S]*?<td>([^<]+)<span[^>]*>[^<]*<\/span><\/td>[\s\S]*?status-(\w+)['"]>[^<]*<\/td>[\s\S]*?>(\d+)<\/td>/g;
       let match;
       while ((match = trRegex.exec(html)) !== null) {
         const [, name, status, count] = match;
