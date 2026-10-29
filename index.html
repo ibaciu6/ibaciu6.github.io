@@ -100,11 +100,6 @@
     .rc-footer { display: flex; align-items: center; gap: 12px; font-size: 0.75rem; color: var(--muted); }
     .rc-lang { display: flex; align-items: center; gap: 5px; }
     .rc-lang .ldot { width: 8px; height: 8px; border-radius: 50%; }
-    .rc-badge {
-      font-size: 0.7rem; padding: 3px 8px; border-radius: 4px;
-      background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.3);
-      color: var(--green); font-weight: 500;
-    }
 
     @media (max-width: 640px) {
       .container { padding: 24px 16px 40px; }
@@ -143,7 +138,8 @@ const LANG_COLORS = {
 };
 
 const REPOS = [
-  { name:'rss-generator', url:'https://github.com/ibaciu6/rss-generator', desc:'Config-driven RSS feed generator for streaming sites. Scrapes 49+ Romanian/English sources, enriches with TMDb posters, deploys to GitHub Pages.', lang:'Python', updated:'2026-08-02', rss:true },
+  { name:'rss-generator', url:'https://github.com/ibaciu6/rss-generator', desc:'Config-driven RSS feed generator for streaming sites. Scrapes Romanian/English sources, enriches with TMDb posters, deploys to GitHub Pages.', lang:'Python', updated:'2026-08-02', rss:true },
+  { name:'ai-launcher', url:'https://github.com/ibaciu6/ai-launcher', desc:'Single-file Bash launcher that detects installed AI coding CLIs, lets you choose one interactively, and launches it.', lang:'Shell', updated:'2026-10-29' },
   { name:'whatsapp-media-scraper', url:'https://github.com/ibaciu6/whatsapp-media-scraper', desc:'WhatsApp group media scraper with interactive menu.', lang:'JavaScript', updated:'2026-08-02' },
   { name:'spotify-youtube-downloader', url:'https://github.com/ibaciu6/spotify-youtube-downloader', desc:'Spotify and YouTube downloader with WebUI.', lang:'Python', updated:'2026-08-02' },
   { name:'process-video', url:'https://github.com/ibaciu6/process-video', desc:'Video processing tool.', lang:'Python', updated:'2026-08-02' },
@@ -157,7 +153,6 @@ function render() {
   const grid = document.getElementById('repoGrid');
   grid.innerHTML = REPOS.sort((a, b) => new Date(b.updated) - new Date(a.updated)).map(r => {
     const color = LANG_COLORS[r.lang] || '#8b949e';
-    const time = timeAgo(r.updated);
     return `<a class="repo-card" href="${r.url}" target="_blank" rel="noopener">
       <div class="rc-header">
         <span class="rc-icon">${r.rss ? '&#128225;' : '&#128196;'}</span>
@@ -166,20 +161,9 @@ function render() {
       <div class="rc-desc">${r.desc || 'No description'}</div>
       <div class="rc-footer">
         <span class="rc-lang"><span class="ldot" style="background:${color}"></span>${r.lang}</span>
-        <span>${time}</span>
-        ${r.rss ? '<span class="rc-badge">16 feeds</span>' : ''}
       </div>
     </a>`;
   }).join('');
-}
-
-function timeAgo(dateStr) {
-  const d = new Date(dateStr);
-  const diff = (new Date() - d) / (1000 * 86400);
-  if (diff < 1) return 'today';
-  if (diff < 30) return Math.round(diff) + 'd ago';
-  if (diff < 365) return Math.round(diff / 30) + 'mo ago';
-  return Math.round(diff / 365) + 'y ago';
 }
 
 document.addEventListener('DOMContentLoaded', render);
